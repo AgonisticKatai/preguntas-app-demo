@@ -7,29 +7,37 @@ export class DataService {
   questions: Question[];
 
   constructor() {
-    this.questions = [
-      {
-        question: 'What is your name?',
-        answer: 'My name is Nacho',
-        hide: true
-      },
-      {
-        question: 'What is your favourite color?',
-        answer: 'Red',
-        hide: true
-      },
-      {
-        question: 'What is your hero?',
-        answer: 'Hulk',
-        hide: true
-      }
-    ];
   }
   getQuestions() {
+    if (localStorage.getItem('questions') === null) {
+      this.questions = [];
+    } else {
+      this.questions = JSON.parse(localStorage.getItem('questions'));
+    }
     return this.questions;
   }
 
   addQuestion(question: Question) {
     this.questions.unshift(question);
+    let questions = [];
+    if (localStorage.getItem('questions') === null) {
+      questions = [];
+      questions.unshift(question);
+      localStorage.setItem('questions', JSON.stringify(questions));
+    } else {
+      questions = JSON.parse(localStorage.getItem('questions'));
+      questions.unshift(question);
+      localStorage.setItem('questions', JSON.stringify(questions));
+    }
+    return this.questions;
+  }
+
+  removeQuestion(question: Question) {
+    for (let i = 0; i < this.questions.length; i++) {
+      if (question === this.questions[i]) {
+        this.questions.splice(i, 1);
+        localStorage.setItem('questions', JSON.stringify(this.questions));
+      }
+    }
   }
 }
