@@ -25,7 +25,11 @@ export class DataService {
       }
     ];
   }
-  getQuestions () {
+  getQuestions() {
     return this.questions;
+  }
+
+  addQuestion(question: Question) {
+    this.questions.unshift(question);
   }
 }
